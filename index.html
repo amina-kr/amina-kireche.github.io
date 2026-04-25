@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Étudiante en Informatique L3</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --card: #1a1a26;
+    --border: #2a2a3d;
+    --accent: #8d86ff;
+    --accent2: #ff9f68;
+    --accent3: #62e2c9;
+    --text: #e8e6f0;
+    --muted: #7a78a0;
+    --tag-bg: #1f1f32;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid de fond */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,106,247,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,106,247,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow orbs */
+  .orb1 {
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(124,106,247,0.12) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+  .orb2 {
+    position: fixed;
+    bottom: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(106,247,196,0.08) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  main { position: relative; z-index: 1; max-width: 940px; margin: 0 auto; padding: 0 2rem; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.88);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .nav-links {
+    display: flex; gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    padding: 7rem 0 5rem;
+    position: relative;
+  }
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 1.0;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+  .hero-name .italic { font-style: italic; color: var(--accent); }
+  .hero-subtitle {
+    font-size: 1rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.05em;
+  }
+  .hero-bio {
+    max-width: 520px;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #c0bdd8;
+    margin-bottom: 3rem;
+  }
+  .hero-bio strong { color: var(--text); font-weight: 600; }
+
+  .hero-highlights {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .highlight-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 1.2rem 1.3rem;
+    display: flex; flex-direction: column;
+    gap: 0.4rem;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+  .highlight-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(141,134,255,0.45);
+    box-shadow: 0 18px 50px rgba(0,0,0,0.16);
+  }
+  .highlight-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .highlight-value {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .btn {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.75rem 1.75rem;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+  }
+  .btn-primary:hover { background: #9180f9; transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* BADGES STATUS */
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(106,247,196,0.08);
+    border: 1px solid rgba(106,247,196,0.25);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent3);
+    margin-bottom: 2rem;
+  }
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent3);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* SECTIONS */
+  section { padding: 5rem 0; border-top: 1px solid var(--border); }
+  .section-header {
+    display: flex; align-items: baseline; gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    color: var(--text);
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .skill-group {
+    background: var(--card);
+    padding: 1.5rem;
+    transition: background 0.2s;
+  }
+  .skill-group:hover { background: #20202e; }
+  .skill-group-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .skill-tags {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+  .skill-tag {
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.3rem 0.65rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: #b0adcc;
+    transition: all 0.15s;
+  }
+  .skill-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* PROJETS */
+  .projects-list { display: flex; flex-direction: column; gap: 1.5rem; }
+  .project-card {
+    background: rgba(18,18,26,0.98);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .project-card:hover { border-color: rgba(141,134,255,0.35); transform: translateY(-2px); }
+  .project-card:hover::before { opacity: 1; }
+
+  .project-card.featured { border-color: rgba(141,134,255,0.38); box-shadow: 0 30px 70px rgba(0,0,0,0.22); }
+  .project-card.featured::before { opacity: 1; }
+
+  .project-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+  .project-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .project-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 100px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .badge-active {
+    background: rgba(106,247,196,0.1);
+    border: 1px solid rgba(106,247,196,0.3);
+    color: var(--accent3);
+  }
+  .badge-done {
+    background: rgba(124,106,247,0.1);
+    border: 1px solid rgba(124,106,247,0.3);
+    color: var(--accent);
+  }
+  .project-desc {
+    font-size: 0.92rem;
+    color: #9a98b8;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+  .project-stack {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+  .stack-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent2);
+    background: rgba(247,160,106,0.08);
+    border: 1px solid rgba(247,160,106,0.2);
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+  }
+
+  /* STAGE */
+  .stage-card {
+    background: var(--card);
+    border: 1px solid rgba(106,247,196,0.2);
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .stage-card::after {
+    content: 'EN COURS';
+    position: absolute;
+    top: 1.5rem; right: 1.75rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--accent3);
+    opacity: 0.6;
+  }
+  .stage-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
+  }
+  .stage-company {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent3);
+    margin-bottom: 1.25rem;
+  }
+  .stage-desc {
+    font-size: 0.95rem;
+    color: #9a98b8;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+  .stage-modules {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.6rem;
+  }
+  .stage-module {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.82rem;
+    color: #b0adcc;
+    font-family: 'DM Mono', monospace;
+  }
+  .stage-module::before {
+    content: '→';
+    color: var(--accent3);
+    font-size: 0.75rem;
+  }
+
+  /* FORMATION */
+  .timeline { position: relative; padding-left: 1.5rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    padding-bottom: 2.5rem;
+    padding-left: 1.5rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.875rem; top: 0.4rem;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .timeline-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.08em;
+  }
+  .timeline-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+  .timeline-place {
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .contact-item {
+    background: var(--card);
+    padding: 1.5rem 2rem;
+    display: flex; align-items: center; gap: 1rem;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .contact-item:hover { background: #20202e; transform: translateY(-1px); }
+  .contact-icon {
+    width: 36px; height: 36px;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .contact-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+  .contact-value {
+    font-size: 0.88rem;
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-top: 2rem;
+  }
+
+  /* Scroll animation */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 900px) {
+    .hero-highlights { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    .hero-name { font-size: 2.8rem; }
+    nav { padding: 0.75rem 1.25rem; }
+    main { padding: 0 1.25rem; }
+    .project-header { flex-direction: column; gap: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb1"></div>
+<div class="orb2"></div>
+
+<nav>
+  <span class="nav-logo">~/portfolio</span>
+  <ul class="nav-links">
+    <li><a href="#competences">compétences</a></li>
+    <li><a href="#projets">projets</a></li>
+    <li><a href="#stage">stage</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      Disponible · Stage en cours · Candidature Master
+    </div>
+    <div class="hero-tag">Étudiante en Informatique — L3</div>
+    <h1 class="hero-name">
+      <br><span class="italic">KIRECHE Amina</span>
+    </h1>
+    <p class="hero-subtitle">// Développeuse Full-Stack · Mobile · Bases de données</p>
+    <p class="hero-bio">
+      Étudiante en troisième année de licence informatique, passionnée par le 
+      <strong>développement web full-stack</strong> et la <strong>conception d'applications mobiles</strong>. 
+      Actuellement en stage de fin d'année sur un projet de <strong>CRM d'entreprise complet</strong>, 
+      je cherche à intégrer un <strong>Master en Informatique</strong> pour approfondir mes expertises.
+    </p>
+    <div class="hero-highlights">
+      <div class="highlight-card">
+        <span class="highlight-label">Projets réalisés</span>
+        <span class="highlight-value">5+ projets concrets</span>
+      </div>
+      <div class="highlight-card">
+        <span class="highlight-label">Domaines</span>
+        <span class="highlight-value">Full-stack · Mobile · Bases de données</span>
+      </div>
+      <div class="highlight-card">
+        <span class="highlight-label">Objectif</span>
+        <span class="highlight-value">Master ciblé</span>
+      </div>
+    </div>
+    <div class="hero-cta">
+      <a href="#projets" class="btn btn-primary">Voir mes projets →</a>
+      <a href="#contact" class="btn btn-outline">Me contacter</a>
+    </div>
+  </section>
+
+  <!-- COMPÉTENCES -->
+  <section id="competences" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Compétences</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-label">Front-end</div>
+        <div class="skill-tags">
+          <span class="skill-tag">HTML5</span>
+          <span class="skill-tag">CSS3</span>
+          <span class="skill-tag">JavaScript</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">Back-end</div>
+        <div class="skill-tags">
+          <span class="skill-tag">PHP</span>
+          <span class="skill-tag">Laravel</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Java</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">Bases de données</div>
+        <div class="skill-tags">
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">XML</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">Mobile</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Android Studio</span>
+          <span class="skill-tag">Java Android</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">Outils & DevOps</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">GitHub</span>
+          <span class="skill-tag">VS Code</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">Langues</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Français (courant)</span>
+          <span class="skill-tag">Anglais (tech)</span>
+          <span class="skill-tag">Arabe (natif)</span>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJETS -->
+  <section id="projets" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Projets</h2>
+    </div>
+    <div class="projects-list">
+
+      <div class="project-card featured">
+        <div class="project-header">
+          <span class="project-title">CRM de Gestion d'Entreprise</span>
+          <span class="project-badge badge-active">Stage · En cours</span>
+        </div>
+        <p class="project-desc">
+          Conception et développement d'un système CRM complet pour la gestion d'entreprise : 
+          gestion des clients, des factures, des stocks, des employés et du reporting. 
+          Architecture MVC avec Laravel, interface responsive et tableaux de bord analytiques.
+        </p>
+        <div class="project-stack">
+          <span class="stack-tag">Laravel</span>
+          <span class="stack-tag">PHP</span>
+          <span class="stack-tag">MySQL</span>
+          <span class="stack-tag">JavaScript</span>
+          <span class="stack-tag">CSS3</span>
+          <span class="stack-tag">Git</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Site Web Dynamique Rare beauty</span>
+          <span class="project-badge badge-done">Terminé</span>
+        </div>
+        <p class="project-desc">
+          Développement d'un site web complet de vente de produit cosmetique avec système d'authentification, 
+          gestion de contenu dynamique. 
+          [Décrivez brièvement le but du site et ses fonctionnalités clés.]
+        </p>
+        <div class="project-stack">
+          <span class="stack-tag">PHP</span>
+          <span class="stack-tag">HTML/CSS</span>
+          <span class="stack-tag">JavaScript</span>
+          <span class="stack-tag">MySQL</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Application de fitness Mobile Android</span>
+          <span class="project-badge badge-active">En cours</span>
+        </div>
+        <p class="project-desc">
+          Application mobile native Android pour [décrire le domaine : e-commerce, gestion, santé…]. 
+          Intégration avec une API REST, stockage local SQLite et interface utilisateur intuitive.
+        </p>
+        <div class="project-stack">
+          <span class="stack-tag">Android Studio</span>
+          <span class="stack-tag">Java</span>
+          <span class="stack-tag">SQLite</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-header">
+          <span class="project-title">Projet Universitaire — Application de gestion de contact</span>
+          <span class="project-badge badge-done">Académique</span>
+        </div>
+        <p class="project-desc">
+          [Décrivez un projet universitaire notable : système de gestion de bibliothèque, 
+          plateforme e-learning, application de gestion de stock, etc.] 
+          Réalisé en équipe avec méthodologie agile.
+        </p>
+        <div class="project-stack">
+          <span class="stack-tag">Python</span>
+          <span class="stack-tag">SQLite</span>
+          <span class="stack-tag">Tikinter</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- STAGE -->
+  <section id="stage" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Stage actuel</h2>
+    </div>
+    <div class="stage-card">
+      <h3 class="stage-title">Développement d'un CRM complet</h3>
+      <p class="stage-company">// [Nom de l'entreprise] · [Ville] · 2025–2026</p>
+      <p class="stage-desc">
+        Dans le cadre de mon stage de fin de L3, je conçois et développe un 
+        système de gestion de la relation client (CRM) complet pour l'entreprise. 
+        Le projet couvre l'ensemble du cycle : analyse des besoins, modélisation 
+        de la base de données, développement back-end, interfaces utilisateur et déploiement.
+      </p>
+      <div class="stage-modules">
+        <div class="stage-module">Gestion des clients</div>
+        <div class="stage-module">Facturation</div>
+        <div class="stage-module">Gestion des stocks</div>
+        <div class="stage-module">Tableau de bord</div>
+        <div class="stage-module">Gestion des RH</div>
+        <div class="stage-module">Rapports & exports</div>
+        <div class="stage-module">Authentification</div>
+        <div class="stage-module">Administration</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMATION -->
+  <section id="formation" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Formation</h2>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">2025 — 2026</div>
+        <div class="timeline-title">Licence 3 Informatique</div>
+        <div class="timeline-place">Université de Mouloude Mammeri Tizi-Ouzou</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2023 — 2024</div>
+        <div class="timeline-title">Licence 2 Informatique</div>
+        <div class="timeline-place">Université de Mouloude Mammeri Tizi-Ouzou</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2022 — 2023</div>
+        <div class="timeline-title">Licence 1 Informatique</div>
+        <div class="timeline-place">Université de Mouloude Mammeri Tizi-Ouzou</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2022</div>
+        <div class="timeline-title">Baccalauréat — Série Mathématiques (Mention Bien) </div>
+        <div class="timeline-place">Lycée des Frères MArtyrs Chekroun Boudjima Tizi-Ouzou</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="fade-in">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Contact</h2>
+    </div>
+    <div class="contact-grid">
+      <a href="mailto:votre.email@example.com" class="contact-item">
+        <div class="contact-icon">✉</div>
+        <div>
+          <span class="contact-label">EMAIL</span>
+          <span class="contact-value">kireche.amina2024@gmail.com</span>
+        </div>
+      </a>
+      <a href="https://github.com/votre-username" target="_blank" class="contact-item">
+        <div class="contact-icon">⌥</div>
+        <div>
+          <span class="contact-label">GITHUB</span>
+          <span class="contact-value">github.com/votre-username</span>
+        </div>
+      </a>
+     
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Conçu & développé par <strong>KIRECHE Amina</strong> · Portfolio L3 Informatique · 2026</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
